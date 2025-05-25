@@ -1,0 +1,14 @@
+<div class="card">
+    <img 
+        class="card__image" 
+        src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308"
+        alt="<%= product.name %>"
+    />
+    <h3 class="card__title"><%= product.name %></h3>
+    <p class="card__description"><%= product.description %></p>
+    <p class="card__price"><%= product.price %> PLN</p>
+    <form action="/products/cart/add" method="POST" style="display:inline;">
+        <input type="hidden" name="productName" value="<%= product.name %>">
+        <button type="submit">Add to Cart</button>
+    </form>
+</div>

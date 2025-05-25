@@ -78,7 +78,6 @@ main {
   padding: 0.2rem 0.4rem;
   border-radius: 50%;
   border: 1px solid red;
-  display: none;
   min-width: 1rem;
   text-align: center;
 }

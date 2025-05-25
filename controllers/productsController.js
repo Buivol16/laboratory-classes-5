@@ -1,6 +1,39 @@
-const Product = require("../models/Product");
+const Product = require('../models/Product');
+const Cart = require('../models/Cart');
+const products = require('../models/ProductArray');
 const { MENU_LINKS } = require("../constants/navigation");
 const { STATUS_CODE } = require("../constants/statusCode");
+
+exports.getProducts = (req, res) => {
+    res.render('products', {
+        products,
+        headTitle: 'All Products',
+        menuLinks: MENU_LINKS,
+        activeLinkPath: '/products',
+        cartCount: Cart.getProductsQuantity()
+    });
+};
+
+exports.getAddProduct = (req, res) => {
+    res.render('add-product', {
+        headTitle: 'Add Products',
+        menuLinks: MENU_LINKS,
+        activeLinkPath: '/products/add',
+        cartCount: Cart.getProductsQuantity()
+    });
+};
+
+
+exports.addProduct = (req, res) => {
+    const { name, description, price } = req.body;
+    const existing = products.find(p => p.name === name);
+    if (existing) {
+        return res.status(400).send('Product with this name already exists!');
+    }
+    const newProduct = new Product(name, description, parseFloat(price));
+    products.push(newProduct);
+    res.redirect('/products');
+};
 
 exports.getProductsView = (request, response) => {
   const products = Product.getAll();
@@ -21,12 +54,6 @@ exports.getAddProductView = (request, response) => {
     menuLinks: MENU_LINKS,
     activeLinkPath: "/products/add",
   });
-};
-
-exports.addNewProduct = (request, response) => {
-  Product.add(request.body);
-
-  response.status(STATUS_CODE.FOUND).redirect("/products/new");
 };
 
 exports.getNewProductView = (request, response) => {
